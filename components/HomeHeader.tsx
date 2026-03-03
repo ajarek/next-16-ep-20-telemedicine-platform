@@ -1,6 +1,6 @@
 import Image from "next/image"
-import React from "react"
 import { Button } from "./ui/button"
+import { Check, HeartHandshake, Siren } from "lucide-react"
 
 const HomeHeader = () => {
   return (
@@ -14,9 +14,15 @@ const HomeHeader = () => {
             Skontaktuj się z certyfikowanymi lekarzami 24/7. Uzyskaj diagnozę,
             otrzymaj leczenie i recepty – wszystko w zaciszu własnego domu.{" "}
           </p>
-            <Button className='text-xl font-semibold px-6 h-12 rounded-xl cursor-pointer'>
+            <Button className='bg-secondary text-secondary-foreground hover:bg-secondary/80 text-xl px-6 h-12 rounded-xl cursor-pointer'>
               Zarezerwuj swoją pierwszą konsultację
+              <HeartHandshake className="ml-2 size-8 text-red-500" />
             </Button>
+            <div className="flex items-center gap-6">
+              <p className="flex items-center gap-2"><Check className="text-green-500" />+500 Lekarzy</p>
+              <p className="flex items-center gap-2"><Check className="text-green-500" />Dostępne 24/7</p>
+              <p className="flex items-center gap-2"><Check className="text-green-500" />Bezpieczne i prywatne</p>
+            </div>
         </div>
         <div>
           <Image
