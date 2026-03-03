@@ -15,7 +15,7 @@ const Footer = () => {
           </div>
           <div>
             <h3 className='text-xl font-bold mb-4'>Szybkie linki</h3>
-            <ul className='space-y-2'>
+            <div className='flex flex-col gap-2'>
               <Link href='/how-it-works' className={`text-lg `}>
                 Jak to działa?
               </Link>
@@ -28,32 +28,27 @@ const Footer = () => {
               <Link href='/reservation' className={`text-lg `}>
                 Zarezerwuj wizytę
               </Link>
-            </ul>
+            </div>
           </div>
           <div>
             <h3 className='text-xl font-bold mb-4'>Specjalizacje</h3>
-            <ul className='space-y-2'>
-              <li>
-                <Link href='#' className='hover:underline'>
-                  Internista
-                </Link>
-              </li>
-              <li>
-                <Link href='#' className='hover:underline'>
-                  Pediatra
-                </Link>
-              </li>
-              <li>
-                <Link href='#' className='hover:underline'>
-                  Ginekolog
-                </Link>
-              </li>
-              <li>
-                <Link href='#' className='hover:underline'>
-                  Dermatolog
-                </Link>
-              </li>
-            </ul>
+            <div className='flex flex-col gap-2'>
+              <Link href='#' className='hover:underline'>
+                Internista
+              </Link>
+
+              <Link href='#' className='hover:underline'>
+                Pediatra
+              </Link>
+
+              <Link href='#' className='hover:underline'>
+                Ginekolog
+              </Link>
+
+              <Link href='#' className='hover:underline'>
+                Dermatolog
+              </Link>
+            </div>
           </div>
           <div>
             <h3 className='text-xl font-bold mb-4'>Kontakt</h3>

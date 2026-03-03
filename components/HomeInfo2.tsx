@@ -1,4 +1,4 @@
-import {HomeInfo2Data} from '@/data/HomeInfo2Data'
+import {HomeInfo2Data} from '@/data/homeInfo2Data'
 import {Card, CardDescription, CardTitle} from '@/components/ui/card'
 
 const HomeInfo2 = () => {
