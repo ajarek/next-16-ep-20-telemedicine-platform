@@ -51,7 +51,7 @@ const Navbar = () => {
           Zaloguj się
         </Button>
         <Button asChild  className='bg-secondary text-secondary-foreground h-9 text-lg cursor-pointer border-primary'>
-         <Link href='/contact'>
+         <Link href='/reservation'>
          <Power className="size-6" />
          Rozpocznij
          </Link>

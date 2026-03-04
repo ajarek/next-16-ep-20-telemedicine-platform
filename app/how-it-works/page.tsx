@@ -1,6 +1,8 @@
 import Image from "next/image"
 import { stepsData } from "@/data/stepsData"
 import { Card, CardDescription, CardFooter, CardTitle } from "@/components/ui/card"
+import HowItWorksInfo1 from "@/components/HowItWorksInfo1"
+import HowItWorksInfo2 from "@/components/HowItWorksInfo2"
 const HowItWorks = () => {
   return (
     <div className='flex flex-col items-center justify-start w-full p-4 md:p-8 gap-8'>
@@ -50,6 +52,8 @@ const HowItWorks = () => {
           </Card>
         ))}
       </div>
+      <HowItWorksInfo1 />
+      <HowItWorksInfo2 />
     </div>
   )
 }
