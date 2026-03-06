@@ -23,9 +23,9 @@ const DoctorsPage = () => {
     )
   return (
     <div className='flex flex-col items-center justify-start w-full p-4 md:p-8 gap-8'>
-      <div className='flex flex-col items-center gap-4'>
+      <div id="doctors" className='flex flex-col items-center gap-4'>
         <h1 className='text-2xl md:text-3xl font-bold '>
-          Znajdź swojego idealnego lekarza
+          Wybierz lekarza
         </h1>
         <p className=' text-center text-xl'>
          Skontaktuj się z certyfikowanymi specjalistami dostępnymi już dziś.
@@ -79,7 +79,7 @@ const DoctorsPage = () => {
           Zarezerwuj konsultację w mniej niż 2 minuty.
         </p>
         <Button asChild className='bg-secondary text-secondary-foreground hover:bg-secondary/80 text-xl md:text-2xl cursor-pointer rounded-xl'>
-            <Link href='/reservation'>Umów się na wizytę</Link>
+            <Link href='#doctors'>Wybierz lekarza</Link>
         </Button>
       </div>
     </div>

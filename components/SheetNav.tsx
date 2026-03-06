@@ -23,6 +23,7 @@ import {
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { ModeToggle } from "./ModeToggle"
+import { Show, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs"
 
 export function SheetNav() {
   const pathname = usePathname()
@@ -66,16 +67,30 @@ export function SheetNav() {
           Zarezerwuj wizytę
         </Link>
           <div className='flex flex-col gap-8 lg:gap-12'>
-            <Button className="bg-secondary text-secondary-foreground h-9 text-lg cursor-pointer ">
-          <LogIn className="size-6" />
-          Zaloguj się
-        </Button>
+           
         <Button asChild  className='bg-secondary text-secondary-foreground h-9 text-lg cursor-pointer border-primary'>
          <Link href='/contact'>
          <Power className="size-6" />
          Rozpocznij
          </Link>
         </Button>
+                <Show when='signed-out'>
+          <SignInButton>
+            <Button className='bg-secondary text-secondary-foreground h-9 text-lg cursor-pointer '>
+              <LogIn className='size-6' />
+              Zaloguj
+            </Button>
+          </SignInButton>
+          <SignUpButton>
+            <Button className='bg-secondary text-secondary-foreground h-9 text-lg cursor-pointer '>
+              Rejestracja
+            </Button>
+          </SignUpButton>
+        </Show>
+        <Show when='signed-in'>
+          <UserButton />
+        </Show>
+        
         <ModeToggle />
            
           </div>

@@ -5,7 +5,7 @@ import { SheetNav } from "./SheetNav"
 import { Button } from "./ui/button"
 import { LogIn, Power, Stethoscope } from "lucide-react"
 import { ModeToggle } from "./ModeToggle"
-
+import { SignInButton, SignUpButton, Show, UserButton } from "@clerk/nextjs"
 const Navbar = () => {
   const pathname = usePathname()
   return (
@@ -15,11 +15,10 @@ const Navbar = () => {
         className='flex items-center gap-0'
         aria-label='TeleMed – strona główna'
       >
-       <Stethoscope className="size-8" />
+        <Stethoscope className='size-8' />
         <span className='text-xl font-bold italic'>TeleMed</span>
       </Link>
       <div className='flex items-center gap-6 max-lg:hidden'>
-       
         <Link
           href='/how-it-works'
           className={`text-lg ${pathname === "/how-it-works" ? "text-accent" : ""} transition-colors hover:text-accent`}
@@ -38,23 +37,39 @@ const Navbar = () => {
         >
           Lekarze
         </Link>
-         <Link
+        <Link
           href='/reservation'
           className={`text-lg ${pathname === "/reservation" ? "text-accent" : ""} transition-colors hover:text-accent`}
         >
           Zarezerwuj wizytę
         </Link>
       </div>
-      <div className="max-lg:hidden flex gap-4">
-        <Button className="bg-secondary text-secondary-foreground h-9 text-lg cursor-pointer ">
-          <LogIn className="size-6" />
-          Zaloguj się
-        </Button>
-        <Button asChild  className='bg-secondary text-secondary-foreground h-9 text-lg cursor-pointer border-primary'>
-         <Link href='/reservation'>
-         <Power className="size-6" />
-         Rozpocznij
-         </Link>
+      
+      <div className='max-lg:hidden flex gap-4 items-center'>
+        <Show when='signed-out'>
+          <SignInButton>
+            <Button className='bg-secondary text-secondary-foreground h-9 text-lg cursor-pointer '>
+              <LogIn className='size-6' />
+              Zaloguj
+            </Button>
+          </SignInButton>
+          <SignUpButton>
+            <Button className='bg-secondary text-secondary-foreground h-9 text-lg cursor-pointer '>
+              Rejestracja
+            </Button>
+          </SignUpButton>
+        </Show>
+        <Show when='signed-in'>
+          <UserButton />
+        </Show>
+        <Button
+          asChild
+          className='bg-secondary text-secondary-foreground h-9 text-lg cursor-pointer border-primary'
+        >
+          <Link href='/doctors'>
+            <Power className='size-6' />
+            Rozpocznij
+          </Link>
         </Button>
         <ModeToggle />
       </div>

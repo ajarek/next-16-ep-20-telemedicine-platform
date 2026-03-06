@@ -72,7 +72,7 @@ const SpecializationsPage = () => {
           Zarezerwuj konsultację w mniej niż 2 minuty.
         </p>
         <Button asChild className='bg-secondary text-secondary-foreground hover:bg-secondary/80 text-xl md:text-2xl cursor-pointer rounded-xl'>
-            <Link href='/reservation'>Umów się na wizytę</Link>
+            <Link href='/doctors'>Umów się na wizytę</Link>
         </Button>
       </div>
     </div>

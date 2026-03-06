@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { use, useState } from "react"
 import {
   Check,
   ShieldCheck,
@@ -20,6 +20,10 @@ import {
   CardDescription,
 } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
+import { doctorsData } from "@/data/doctorsData"
+import { useRouter } from "next/navigation"
+import { useUser } from "@clerk/nextjs"
+import Link from "next/link"
 
 const steps = [
   { id: 1, name: "Objawy", icon: Activity },
@@ -43,10 +47,18 @@ const durations = [
   "Ponad tydzień",
 ]
 
-export default function ReservationPage() {
+export default function ReservationPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ doctorId: string }>
+}) {
+  const { doctorId } = use(searchParams)
+  const doctor = doctorsData.find((doctor) => doctor.id === +doctorId)
+  const router = useRouter()
   const [duration, setDuration] = useState("Krócej niż 24 godziny")
   const [severity, setSeverity] = useState("moderate")
   const [diagnosed, setDiagnosed] = useState(false)
+  const { user } = useUser()
 
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -57,6 +69,8 @@ export default function ReservationPage() {
     console.log("Nasilenie objawów: ", severity)
     console.log("Czy zdiagnozowano: ", diagnosed)
     console.log("Zdjęcia: ", formData.get("foto"))
+    console.log("Lekarz: ", doctor?.name || "Brak")
+    console.log("Użytkownik: ", user?.firstName || "Brak")
     e.currentTarget.reset()
     setDuration("Krócej niż 24 godziny")
     setSeverity("moderate")
@@ -66,9 +80,10 @@ export default function ReservationPage() {
   return (
     <div className='min-h-screen bg-slate-50 dark:bg-zinc-950 flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8 w-full font-sans'>
       <div className='text-center mb-10 w-full max-w-4xl pt-8'>
-        <h1 className='text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4'>
-          Zarezerwuj wizytę
-        </h1>
+        <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground mb-4">Witaj {user?.firstName || ""}!</h1>
+        <h2 className='text-2xl md:text-3xl font-bold tracking-tight text-foreground mb-4'>
+          Zarezerwuj wizytę u {doctor?.name || <Link href="/doctors" className="text-primary hover:underline">wybranego lekarza</Link>}
+        </h2>
         <p className='text-lg text-muted-foreground'>
           Wykonaj 4 proste kroki, aby połączyć się ze swoim lekarzem
         </p>
@@ -78,8 +93,9 @@ export default function ReservationPage() {
         <div className='flex items-center justify-between relative px-2 sm:px-4'>
           <div className='absolute left-0 top-1/2 -translate-y-1/2 w-full h-0.5 bg-border -z-10'></div>
           {steps.map((step) => {
-            const isActive = step.id === 1
-            const isCompleted = step.id < 1
+            const isActive = step.id === 1 || (doctorId && step.id === 2)
+            const isCompleted = step.id < 1 || (doctorId && step.id < 3)
+
             return (
               <div
                 key={step.id}
@@ -116,7 +132,7 @@ export default function ReservationPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className='pt-8 space-y-8 px-6 sm:px-8 pb-8'>
-          <form onSubmit={handleFormSubmit}>
+          <form onSubmit={handleFormSubmit} className='flex flex-col gap-4'>
             <div className='space-y-3'>
               <Label htmlFor='reason' className='text-base font-semibold'>
                 Z czym dzisiaj przychodzisz?
@@ -149,6 +165,7 @@ export default function ReservationPage() {
                 rows={4}
                 className='w-full p-4 rounded-xl border-2 border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary resize-none placeholder:text-muted-foreground/70 text-foreground font-medium'
                 placeholder='Proszę, opisz szczegółowo swoje objawy...'
+                required
               />
               <div className='text-right text-xs text-muted-foreground font-medium'>
                 0/500
@@ -162,6 +179,7 @@ export default function ReservationPage() {
               <div className='flex flex-wrap gap-2 sm:gap-3'>
                 {durations.map((d) => (
                   <button
+                    type='button'
                     key={d}
                     onClick={() => setDuration(d)}
                     className={`px-4 py-2 sm:px-5 sm:py-2.5 rounded-full border-2 text-sm sm:text-base font-semibold transition-all ${duration === d ? "bg-primary border-primary text-primary-foreground shadow-sm" : "bg-background border-border hover:bg-muted text-foreground"}`}
@@ -179,6 +197,7 @@ export default function ReservationPage() {
               <div className='grid grid-cols-5 gap-2 sm:gap-4'>
                 {severities.map((s) => (
                   <button
+                    type='button'
                     key={s.value}
                     onClick={() => setSeverity(s.value)}
                     className={`flex flex-col items-center justify-center py-4 px-2 sm:p-4 rounded-xl border-2 transition-all gap-2 ${severity === s.value ? "bg-primary/5 border-primary ring-1 ring-primary shadow-sm" : "bg-background border-border hover:bg-muted"}`}
@@ -203,8 +222,10 @@ export default function ReservationPage() {
                 Czy diagnozowano u Ciebie ten stan już wcześniej?
               </Label>
               <button
+                type='button'
                 id='diagnosed'
                 className={`relative inline-flex h-7 w-12 shrink-0 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${diagnosed ? "bg-primary text-primary-foreground" : "bg-border"}`}
+                onClick={() => setDiagnosed(!diagnosed)}
               >
                 <span
                   className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-sm transition-transform ${diagnosed ? "translate-x-6" : "translate-x-1"}`}
@@ -214,7 +235,6 @@ export default function ReservationPage() {
 
             <div className='relative space-y-3 w-full h-[200px]'>
               <Label className='w-full  absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-base font-semibold flex flex-col items-center justify-center gap-3'>
-                
                 <div className='w-12 h-12 rounded-full bg-background border-2 border-border shadow-sm flex items-center justify-center group-hover:scale-110 transition-transform'>
                   <UploadCloud className='w-6 h-6 text-muted-foreground' />
                 </div>
@@ -235,18 +255,28 @@ export default function ReservationPage() {
                 id='foto'
                 accept='image/*'
                 multiple
-
               ></input>
             </div>
 
             <div className='pt-6 border-t-2 border-border/50 flex flex-col gap-4'>
-              <Button
-                type='submit'
-                className='w-full text-base sm:text-lg h-14 rounded-xl font-bold font-sans tracking-wide cursor-pointer text-primary-foreground'
-              >
-                Przejdź do wyboru lekarza{" "}
-                <ChevronRight className='ml-2 w-5 h-5' />
-              </Button>
+              {doctorId ? (
+                <Button
+                  type='submit'
+                  className='w-full text-base sm:text-lg h-14 rounded-xl font-bold font-sans tracking-wide cursor-pointer text-primary-foreground'
+                >
+                  Przejdź do wyboru terminu{" "}
+                  <ChevronRight className='ml-2 w-5 h-5' />
+                </Button>
+              ) : (
+                <Button
+                  type='button'
+                  className='w-full text-base sm:text-lg h-14 rounded-xl font-bold font-sans tracking-wide cursor-pointer text-primary-foreground'
+                  onClick={() => router.push("/doctors")}
+                >
+                  Przejdź do wyboru lekarza{" "}
+                  <ChevronRight className='ml-2 w-5 h-5' />
+                </Button>
+              )}
               <div className='flex items-center justify-center gap-2 text-xs sm:text-sm text-muted-foreground font-semibold'>
                 <ShieldCheck className='w-4 h-4 text-green-500' />
                 Twoje dane są bezpieczne i szyfrowane

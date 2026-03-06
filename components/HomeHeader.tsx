@@ -16,7 +16,7 @@ const HomeHeader = () => {
             otrzymaj leczenie i recepty – wszystko w zaciszu własnego domu.{" "}
           </p>
             <Button asChild className='bg-secondary text-secondary-foreground hover:bg-secondary/80 text-xl px-6 h-12 rounded-xl cursor-pointer'>
-              <Link href='/reservation'>Zarezerwuj swoją pierwszą konsultację <HeartHandshake className="ml-2 size-8 text-red-500" /></Link>
+              <Link href='/doctors'>Zarezerwuj swoją pierwszą konsultację <HeartHandshake className="ml-2 size-8 text-red-500" /></Link>
             </Button>
             <div className="flex items-center gap-6">
               <p className="flex items-center gap-2"><Check className="text-green-500" />+500 Lekarzy</p>
