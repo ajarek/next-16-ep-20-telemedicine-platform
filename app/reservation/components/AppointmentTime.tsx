@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Clock, Lock, ChevronLeft } from "lucide-react"
 import Image from "next/image"
+import { useRegisterStore } from "@/store/visitStore"
+import { Visit } from "@/types/typeVisit"
 
 interface Doctor {
   id: number
@@ -103,6 +105,8 @@ export default function AppointmentTime({
 }: AppointmentTimeProps) {
   const [selectedDate, setSelectedDate] = useState(dates[0].id)
   const [selectedTime, setSelectedTime] = useState<string | null>("09:00")
+  const { addItemToRegister, currentVisit, updateCurrentVisit } =
+    useRegisterStore()
 
   return (
     <Card className='w-full max-w-3xl border-2 shadow-sm rounded-2xl overflow-hidden bg-background'>
@@ -116,6 +120,7 @@ export default function AppointmentTime({
                 alt={doctor.name}
                 fill
                 className='object-cover'
+                sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
               />
             </div>
             <div>
@@ -225,6 +230,16 @@ export default function AppointmentTime({
               const dateLabel =
                 dates.find((d) => d.id === selectedDate)?.date || "18 Gru"
               onNext(dateLabel, selectedTime || "09:00")
+
+              const finalVisit: Visit = {
+                ...currentVisit,
+                id: currentVisit.id || Date.now(),
+                date: dateLabel,
+                time: selectedTime || "09:00",
+              }
+
+              updateCurrentVisit(finalVisit)
+              addItemToRegister(finalVisit)
             }}
             disabled={!selectedTime}
             className='w-full sm:w-auto h-12 px-6 rounded-xl font-bold sm:text-base tracking-wide shadow-md'

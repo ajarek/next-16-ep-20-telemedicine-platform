@@ -25,6 +25,9 @@ import { useRouter } from "next/navigation"
 import { useUser } from "@clerk/nextjs"
 import Link from "next/link"
 import AppointmentTime from "./components/AppointmentTime"
+import PaymentSection from "./components/PaymentSection"
+import { useRegisterStore } from "@/store/visitStore"
+import { Visit } from "@/types/typeVisit"
 
 const steps = [
   { id: 1, name: "Objawy", icon: Activity },
@@ -61,18 +64,29 @@ export default function ReservationPage({
   const [diagnosed, setDiagnosed] = useState(false)
   const [currentStep, setCurrentStep] = useState(1)
   const { user } = useUser()
+  const { updateCurrentVisit } = useRegisterStore()
 
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
-    console.log("Powód wizyty: ", formData.get("reason"))
-    console.log("Objawy: ", formData.get("symptoms"))
-    console.log("Czas trwania objawów: ", duration)
-    console.log("Nasilenie objawów: ", severity)
-    console.log("Czy zdiagnozowano: ", diagnosed)
-    console.log("Zdjęcia: ", formData.get("foto"))
-    console.log("Lekarz: ", doctor?.name || "Brak")
-    console.log("Użytkownik: ", user?.firstName || "Brak")
+    const visitPartial: Partial<Visit> = {
+      id: Date.now(),
+      reason: formData.get("reason") as string,
+      symptoms: formData.get("symptoms") as string,
+      duration: duration,
+      severity: severity,
+      diagnosed: diagnosed,
+      foto: formData.get("foto") as string,
+      doctor: doctor?.name || "Brak lekarza",
+      doctorName: doctor?.name,
+      doctorId: doctor?.id,
+      doctorSpecialization: doctor?.specialty,
+      doctorImage: doctor?.images,
+      user: user?.fullName || user?.firstName || "Brak",
+      name: user?.fullName || user?.firstName || "",
+      email: user?.primaryEmailAddress?.emailAddress || "",
+    }
+    updateCurrentVisit(visitPartial)
     if (doctorId) {
       setCurrentStep(3)
     } else {
@@ -308,6 +322,16 @@ export default function ReservationPage({
           onNext={(date, time) => {
             console.log("Selected term:", date, time)
             setCurrentStep(4)
+          }}
+        />
+      )}
+
+      {currentStep === 4 && (
+        <PaymentSection
+          onBack={() => setCurrentStep(3)}
+          onConfirm={() => {
+            console.log("Płatność potwierdzona")
+            router.push("/")
           }}
         />
       )}

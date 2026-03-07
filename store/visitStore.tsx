@@ -4,14 +4,25 @@ import type { Visit } from "@/types/typeVisit"
 
 type RegisterState = {
   items: Visit[]
+  currentVisit: Partial<Visit>
+  updateCurrentVisit: (visit: Partial<Visit>) => void
   addItemToRegister: (item: Visit) => void
   removeItemFromRegister: (id: number) => void
+  clearCurrentVisit: () => void
 }
 
 export const useRegisterStore = create<RegisterState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       items: [],
+      currentVisit: {},
+
+      updateCurrentVisit: (visit) =>
+        set((state) => ({
+          currentVisit: { ...state.currentVisit, ...visit },
+        })),
+
+      clearCurrentVisit: () => set({ currentVisit: {} }),
 
       addItemToRegister: (item: Visit) =>
         set((state) => ({
