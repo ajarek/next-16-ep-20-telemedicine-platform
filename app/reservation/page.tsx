@@ -26,6 +26,7 @@ import { useUser } from "@clerk/nextjs"
 import Link from "next/link"
 import AppointmentTime from "./components/AppointmentTime"
 import PaymentSection from "./components/PaymentSection"
+import ConfirmationSection from "./components/ConfirmationSection"
 import { useRegisterStore } from "@/store/visitStore"
 import { Visit } from "@/types/typeVisit"
 
@@ -96,57 +97,61 @@ export default function ReservationPage({
 
   return (
     <div className='min-h-screen bg-slate-50 dark:bg-zinc-950 flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8 w-full font-sans'>
-      <div className='text-center mb-10 w-full max-w-4xl pt-8'>
-        <h1 className='text-2xl md:text-3xl font-bold tracking-tight text-foreground mb-4'>
-          Witaj {user?.firstName || ""}!
-        </h1>
-        <h2 className='text-2xl md:text-3xl font-bold tracking-tight text-foreground mb-4'>
-          Zarezerwuj wizytę u{" "}
-          {doctor?.name || (
-            <Link href='/doctors' className='text-primary hover:underline'>
-              wybranego lekarza
-            </Link>
-          )}
-        </h2>
-        <p className='text-lg text-muted-foreground'>
-          Wykonaj 4 proste kroki, aby połączyć się ze swoim lekarzem
-        </p>
-      </div>
+      {currentStep < 5 && (
+        <>
+          <div className='text-center mb-10 w-full max-w-4xl pt-8'>
+            <h1 className='text-2xl md:text-3xl font-bold tracking-tight text-foreground mb-4'>
+              Witaj {user?.firstName || ""}!
+            </h1>
+            <h2 className='text-2xl md:text-3xl font-bold tracking-tight text-foreground mb-4'>
+              Zarezerwuj wizytę u{" "}
+              {doctor?.name || (
+                <Link href='/doctors' className='text-primary hover:underline'>
+                  wybranego lekarza
+                </Link>
+              )}
+            </h2>
+            <p className='text-lg text-muted-foreground'>
+              Wykonaj 4 proste kroki, aby połączyć się ze swoim lekarzem
+            </p>
+          </div>
 
-      <div className='w-full max-w-3xl mb-12'>
-        <div className='flex items-center justify-between relative px-2 sm:px-4'>
-          <div className='absolute left-0 top-1/2 -translate-y-1/2 w-full h-0.5 bg-border -z-10'></div>
-          {steps.map((step) => {
-            const isActive =
-              step.id === currentStep ||
-              (doctorId && step.id === 2 && currentStep === 1)
-            const isCompleted =
-              step.id < currentStep || (doctorId && step.id === 2)
+          <div className='w-full max-w-3xl mb-12'>
+            <div className='flex items-center justify-between relative px-2 sm:px-4'>
+              <div className='absolute left-0 top-1/2 -translate-y-1/2 w-full h-0.5 bg-border -z-10'></div>
+              {steps.map((step) => {
+                const isActive =
+                  step.id === currentStep ||
+                  (doctorId && step.id === 2 && currentStep === 1)
+                const isCompleted =
+                  step.id < currentStep || (doctorId && step.id === 2)
 
-            return (
-              <div
-                key={step.id}
-                className='flex flex-col items-center gap-2 bg-slate-50 dark:bg-zinc-950 px-2 sm:px-4 z-10'
-              >
-                <div
-                  className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 flex items-center justify-center font-bold text-sm sm:text-base transition-colors ${isActive ? "bg-primary border-primary text-primary-foreground shadow-sm" : isCompleted ? "bg-primary border-primary text-primary-foreground" : "bg-background border-border text-muted-foreground hover:bg-muted"}`}
-                >
-                  {isCompleted ? (
-                    <Check className='w-5 h-5 sm:w-6 sm:h-6' />
-                  ) : (
-                    step.id
-                  )}
-                </div>
-                <span
-                  className={`text-xs sm:text-sm font-medium ${isActive ? "text-primary" : "text-muted-foreground"}`}
-                >
-                  {step.name}
-                </span>
-              </div>
-            )
-          })}
-        </div>
-      </div>
+                return (
+                  <div
+                    key={step.id}
+                    className='flex flex-col items-center gap-2 bg-slate-50 dark:bg-zinc-950 px-2 sm:px-4 z-10'
+                  >
+                    <div
+                      className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 flex items-center justify-center font-bold text-sm sm:text-base transition-colors ${isActive ? "bg-primary border-primary text-primary-foreground shadow-sm" : isCompleted ? "bg-primary border-primary text-primary-foreground" : "bg-background border-border text-muted-foreground hover:bg-muted"}`}
+                    >
+                      {isCompleted ? (
+                        <Check className='w-5 h-5 sm:w-6 sm:h-6' />
+                      ) : (
+                        step.id
+                      )}
+                    </div>
+                    <span
+                      className={`text-xs sm:text-sm font-medium ${isActive ? "text-primary" : "text-muted-foreground"}`}
+                    >
+                      {step.name}
+                    </span>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        </>
+      )}
 
       {currentStep === 1 && (
         <Card className='w-full max-w-2xl border-2 shadow-sm rounded-2xl overflow-hidden bg-background'>
@@ -331,10 +336,12 @@ export default function ReservationPage({
           onBack={() => setCurrentStep(3)}
           onConfirm={() => {
             console.log("Płatność potwierdzona")
-            router.push("/")
+            setCurrentStep(5)
           }}
         />
       )}
+
+      {currentStep === 5 && <ConfirmationSection />}
     </div>
   )
 }

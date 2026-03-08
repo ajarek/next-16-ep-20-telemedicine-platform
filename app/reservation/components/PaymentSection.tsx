@@ -36,8 +36,12 @@ export default function PaymentSection({
   const tax = subtotal * 0.08
   const total = subtotal + tax
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    onConfirm?.()
+  }
   return (
-    <div className='flex flex-col lg:flex-row gap-6 w-full max-w-5xl items-start font-sans'>
+    <form onSubmit={handleSubmit} className='flex flex-col lg:flex-row gap-6 w-full max-w-5xl items-start font-sans'>
       {/* Kolumna lewa - Szczegóły płatności */}
       <Card className='flex-1 border-2 shadow-sm rounded-2xl overflow-hidden bg-background w-full'>
         <CardContent className='p-6 sm:p-8 space-y-8'>
@@ -151,8 +155,10 @@ export default function PaymentSection({
               <Label className='text-sm font-semibold'>Numer karty</Label>
               <div className='relative'>
                 <Input
+                  name='cardNumber'
                   placeholder='1234 5678 9012 3456'
                   className='h-12 px-4 rounded-xl border-2 text-base'
+                  required
                 />
                 <div className='absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1'>
                   {/* Fake card icons */}
@@ -173,13 +179,16 @@ export default function PaymentSection({
                 <Input
                   placeholder='MM/RR'
                   className='h-12 px-4 rounded-xl border-2 text-base'
+                  required
                 />
               </div>
               <div className='space-y-3'>
                 <Label className='text-sm font-semibold'>CVV</Label>
                 <Input
+                  name='cvv'
                   placeholder='123'
                   className='h-12 px-4 rounded-xl border-2 text-base'
+                  required
                 />
               </div>
             </div>
@@ -189,16 +198,20 @@ export default function PaymentSection({
                 Imię i nazwisko posiadacza
               </Label>
               <Input
+                name='cardHolderName'
                 placeholder='Jan Kowalski'
                 className='h-12 px-4 rounded-xl border-2 text-base'
+                required
               />
             </div>
 
             <div className='space-y-3'>
               <Label className='text-sm font-semibold'>Kod pocztowy</Label>
               <Input
+                name='zipCode'
                 placeholder='00-000'
                 className='h-12 px-4 rounded-xl border-2 text-base'
+                required
               />
             </div>
 
@@ -315,6 +328,7 @@ export default function PaymentSection({
 
           <div className='pt-4'>
             <Input
+              name='promoCode'
               placeholder='Masz kod promocyjny?'
               className='h-12 px-4 rounded-xl border-2 text-sm bg-white dark:bg-zinc-950 flex-1'
             />
@@ -322,8 +336,8 @@ export default function PaymentSection({
 
           <div className='pt-2 space-y-4 flex flex-col'>
             <Button
+              type='submit'
               className='w-full h-14 rounded-xl font-bold text-lg tracking-wide shadow-md bg-emerald-500 hover:bg-emerald-600 text-white flex items-center justify-center transition-all'
-              onClick={onConfirm}
             >
               <Lock className='w-4 h-4 mr-2' />
               Potwierdź i zapłać {total.toFixed(2)} zł
@@ -347,6 +361,6 @@ export default function PaymentSection({
           </div>
         </CardContent>
       </Card>
-    </div>
+    </form>
   )
 }
