@@ -34,7 +34,6 @@ export default function ConfirmationSection() {
 
   return (
     <div className='flex flex-col items-center w-full max-w-3xl mx-auto font-sans animate-in fade-in zoom-in duration-500'>
-      {/* Icon */}
       <div className='w-20 h-20 bg-emerald-500 rounded-full flex items-center justify-center shadow-lg shadow-emerald-500/30 mb-6'>
         <Check className='w-10 h-10 text-white' strokeWidth={3} />
       </div>
@@ -49,7 +48,6 @@ export default function ConfirmationSection() {
         </span>
       </p>
 
-      {/* Doctor Card */}
       <Card className='w-full border shadow-sm rounded-2xl overflow-hidden bg-white dark:bg-zinc-950/50 mb-8'>
         <CardContent className='p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center gap-6'>
           <div className='flex items-center gap-5 flex-1 w-full'>
@@ -91,7 +89,6 @@ export default function ConfirmationSection() {
         </CardContent>
       </Card>
 
-      {/* Action Buttons */}
       <div className='flex flex-col sm:flex-row gap-4 w-full justify-center mb-10'>
         <Button
           variant='outline'
@@ -122,7 +119,6 @@ export default function ConfirmationSection() {
               </SheetDescription>
             </SheetHeader>
             <div className='flex flex-col gap-6'>
-              {/* Sekcja Termin */}
               <div className='space-y-3 bg-muted/50 p-4 rounded-xl border'>
                 <div className='flex items-center gap-2 text-primary'>
                   <Calendar className='w-5 h-5' />
@@ -156,7 +152,6 @@ export default function ConfirmationSection() {
                 </div>
               </div>
 
-              {/* Sekcja Pacjent */}
               <div className='space-y-3 bg-muted/50 p-4 rounded-xl border'>
                 <div className='flex items-center gap-2 text-primary'>
                   <User className='w-5 h-5' />
@@ -188,7 +183,6 @@ export default function ConfirmationSection() {
                 </div>
               </div>
 
-              {/* Sekcja Lekarz */}
               <div className='space-y-3 bg-muted/50 p-4 rounded-xl border'>
                 <div className='flex items-center gap-2 text-primary'>
                   <Stethoscope className='w-5 h-5' />
@@ -224,7 +218,6 @@ export default function ConfirmationSection() {
                 </div>
               </div>
 
-              {/* Sekcja Wywiad medyczny */}
               <div className='space-y-3 bg-emerald-50/50 dark:bg-emerald-950/20 p-4 rounded-xl border border-emerald-100 dark:border-emerald-900'>
                 <h4 className='font-semibold text-emerald-700 dark:text-emerald-400 text-lg'>
                   Wskazania dla lekarza
@@ -254,7 +247,6 @@ export default function ConfirmationSection() {
         </Sheet>
       </div>
 
-      {/* Before Your Appointment Section */}
       <div className='w-full bg-sky-50 dark:bg-sky-950/20 border border-sky-100 dark:border-sky-900 rounded-2xl p-6 sm:p-8 flex flex-col items-start'>
         <h3 className='text-xl font-bold text-foreground mb-6'>Przed wizytą</h3>
         <ul className='space-y-4 text-sm sm:text-base'>

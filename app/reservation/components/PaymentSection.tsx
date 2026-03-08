@@ -29,7 +29,6 @@ export default function PaymentSection({
   const { currentVisit } = useRegisterStore()
   const [paymentMethod, setPaymentMethod] = useState("card")
 
-  // Mocked prices for UI
   const consultationFee = currentVisit.doctorPrice || 150
   const platformFee = 20
   const subtotal = consultationFee + platformFee
@@ -41,15 +40,16 @@ export default function PaymentSection({
     onConfirm?.()
   }
   return (
-    <form onSubmit={handleSubmit} className='flex flex-col lg:flex-row gap-6 w-full max-w-5xl items-start font-sans'>
-      {/* Kolumna lewa - Szczegóły płatności */}
+    <form
+      onSubmit={handleSubmit}
+      className='flex flex-col lg:flex-row gap-6 w-full max-w-5xl items-start font-sans'
+    >
       <Card className='flex-1 border-2 shadow-sm rounded-2xl overflow-hidden bg-background w-full'>
         <CardContent className='p-6 sm:p-8 space-y-8'>
           <h2 className='text-2xl font-bold text-foreground'>
             Szczegóły płatności
           </h2>
 
-          {/* Metody płatności */}
           <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
             <button
               onClick={() => setPaymentMethod("card")}
@@ -161,7 +161,6 @@ export default function PaymentSection({
                   required
                 />
                 <div className='absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1'>
-                  {/* Fake card icons */}
                   <div className='w-8 h-5 bg-blue-600 rounded flex items-center justify-center text-[8px] text-white font-bold italic'>
                     VISA
                   </div>
@@ -242,14 +241,12 @@ export default function PaymentSection({
         </CardContent>
       </Card>
 
-      {/* Kolumna prawa - Podsumowanie */}
       <Card className='w-full lg:w-[400px] border-none shadow-none rounded-2xl overflow-hidden bg-slate-50 dark:bg-slate-900/50 shrink-0'>
         <CardContent className='p-6 sm:p-8 space-y-6'>
           <h2 className='text-xl sm:text-2xl font-bold text-foreground'>
             Podsumowanie wizyty
           </h2>
 
-          {/* Doctor Info */}
           <div className='flex items-center gap-4 bg-white dark:bg-zinc-950 p-4 rounded-xl border border-border shadow-sm'>
             <div className='relative w-14 h-14 rounded-full overflow-hidden shrink-0 border-2 border-primary/20 bg-muted'>
               {currentVisit.doctorImage ? (

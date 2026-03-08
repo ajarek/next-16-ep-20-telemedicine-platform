@@ -111,7 +111,6 @@ export default function AppointmentTime({
   return (
     <Card className='w-full max-w-3xl border-2 shadow-sm rounded-2xl overflow-hidden bg-background'>
       <CardContent className='p-6 sm:p-8 space-y-8'>
-        {/* Doctor Info */}
         {doctor && (
           <div className='flex items-center gap-4 bg-muted/20 p-4 rounded-xl border border-border/50'>
             <div className='relative w-12 h-12 rounded-full overflow-hidden shrink-0 border-2 border-primary/20 bg-muted'>
@@ -134,12 +133,10 @@ export default function AppointmentTime({
           </div>
         )}
 
-        {/* Title */}
         <h2 className='text-2xl sm:text-3xl font-bold text-foreground'>
           Wybierz czas wizyty
         </h2>
 
-        {/* Dates */}
         <div className='flex gap-3 overflow-x-auto pb-2 scrollbar-hide snap-x'>
           {dates.map((d) => (
             <button
@@ -166,7 +163,6 @@ export default function AppointmentTime({
           ))}
         </div>
 
-        {/* Time Slots */}
         <div className='space-y-6'>
           {Object.entries(timeSlots).map(([period, slots]) => (
             <div key={period}>
@@ -198,7 +194,6 @@ export default function AppointmentTime({
           ))}
         </div>
 
-        {/* Info Footer */}
         <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 rounded-xl bg-muted/20 border border-border/50'>
           <div className='flex items-center gap-2 text-sm text-foreground font-semibold'>
             <Clock className='w-4 h-4 text-muted-foreground' />
@@ -215,7 +210,6 @@ export default function AppointmentTime({
           </div>
         </div>
 
-        {/* Action Buttons */}
         <div className='pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4'>
           <Button
             variant='ghost'

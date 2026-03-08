@@ -324,8 +324,7 @@ export default function ReservationPage({
         <AppointmentTime
           doctor={doctor}
           onBack={() => setCurrentStep(1)}
-          onNext={(date, time) => {
-            console.log("Selected term:", date, time)
+          onNext={() => {
             setCurrentStep(4)
           }}
         />
@@ -335,7 +334,6 @@ export default function ReservationPage({
         <PaymentSection
           onBack={() => setCurrentStep(3)}
           onConfirm={() => {
-            console.log("Płatność potwierdzona")
             setCurrentStep(5)
           }}
         />
